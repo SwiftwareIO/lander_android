@@ -1,13 +1,16 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     alias(libs.plugins.android.library)
-    `maven-publish`
+    alias(libs.plugins.maven.publish)
 }
 
-group = "link.lander"
-version = "0.1.0"
+group = property("GROUP").toString()
+version = property("VERSION_NAME").toString()
 
 android {
     namespace = "link.lander.android"
@@ -42,12 +45,6 @@ android {
         // Version freshness checks need the network and are not about this code.
         disable += setOf("NewerVersionAvailable", "AndroidGradlePluginVersion", "GradleDependency")
     }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
 }
 
 kotlin {
@@ -61,8 +58,9 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.kotlinx.coroutines.android)
+    // api: the public API exposes Kotlin and coroutines types (Flow, suspend functions).
+    api(libs.kotlin.stdlib)
+    api(libs.kotlinx.coroutines.android)
     // Play Install Referrer: read once on first launch for deferred deep links.
     implementation(libs.installreferrer)
 
@@ -74,36 +72,54 @@ dependencies {
     testImplementation(libs.robolectric)
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "link.lander"
-            artifactId = "lander-android"
-            version = project.version.toString()
-            afterEvaluate { from(components["release"]) }
-            pom {
-                name.set("Lander Android SDK")
-                description.set("Deep linking without the fuss: receive, resolve and create Lander links in Android apps.")
-                url.set("https://golander.link")
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("lander")
-                        name.set("Lander")
-                        url.set("https://golander.link")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/SwiftwareIO/lander")
-                }
+// Maven Central through the Central Portal. See RELEASING.md. Credentials come from
+// Gradle properties or ORG_GRADLE_PROJECT_ environment variables: mavenCentralUsername,
+// mavenCentralPassword, signingInMemoryKey and signingInMemoryKeyPassword.
+mavenPublishing {
+    coordinates(group.toString(), property("POM_ARTIFACT_ID").toString(), version.toString())
+    configure(
+        AndroidSingleVariantLibrary(
+            javadocJar = JavadocJar.Empty(),
+            sourcesJar = SourcesJar.Sources(),
+            variant = "release",
+        ),
+    )
+    publishToMavenCentral(automaticRelease = true)
+    // Sign only when a key is configured, so publishToMavenLocal works without one.
+    // Maven Central rejects unsigned artifacts, so a release without a key fails there.
+    if (providers.gradleProperty("signingInMemoryKey").isPresent) {
+        signAllPublications()
+    }
+
+    pom {
+        name.set("Lander Android SDK")
+        description.set("Deep linking without the fuss: receive, resolve and create Lander links in Android apps.")
+        inceptionYear.set("2026")
+        url.set("https://golander.link")
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+                distribution.set("repo")
             }
         }
+        developers {
+            developer {
+                id.set("swiftwareio")
+                name.set("Lander")
+                organization.set("Swiftware")
+                organizationUrl.set("https://golander.link")
+                url.set("https://github.com/SwiftwareIO")
+            }
+        }
+        scm {
+            url.set("https://github.com/SwiftwareIO/lander_android")
+            connection.set("scm:git:https://github.com/SwiftwareIO/lander_android.git")
+            developerConnection.set("scm:git:ssh://git@github.com/SwiftwareIO/lander_android.git")
+        }
+        issueManagement {
+            system.set("GitHub")
+            url.set("https://github.com/SwiftwareIO/lander_android/issues")
+        }
     }
-    // No remote repository here: `./gradlew :lander:publishToMavenLocal` for local
-    // testing. Add Maven Central credentials in CI when publishing is set up.
 }

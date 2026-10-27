@@ -264,6 +264,10 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 
 The SDK core (`LanderClient`) runs behind a `LanderPlatform` interface and an `HttpTransport`, so most tests run on the JVM with fakes and virtual time; Robolectric covers intents and storage.
 
+## Releasing
+
+Releases go to Maven Central from a monorepo tag `android-vX.Y.Z`, and `sdk/lander_android` is mirrored read only to [github.com/SwiftwareIO/lander_android](https://github.com/SwiftwareIO/lander_android). See [RELEASING.md](RELEASING.md) for the one-time setup and the steps for each release.
+
 ## API
 
 The SDK only talks to Lander's public API (`/v1/sdk/init`, `/v1/sdk/resolve`, `/v1/sdk/events`, `/v1/sdk/links`, `/v1/sdk/handoffs/claim`), never to the database. Requests carry `X-Lander-Sdk: android/<version>`. Every request has a 10 second timeout; every write carries an `Idempotency-Key` that stays the same across retries.

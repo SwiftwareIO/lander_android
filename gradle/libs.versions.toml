@@ -10,6 +10,7 @@ json = "20240303"
 mockwebserver = "4.12.0"
 robolectric = "4.16"
 activity = "1.13.0"
+mavenPublish = "0.37.0"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinStdlib" }
@@ -27,3 +28,4 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
