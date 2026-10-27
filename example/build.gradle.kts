@@ -42,6 +42,7 @@ kotlin {
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
     implementation(project(":lander"))
     implementation(libs.androidx.activity.ktx)
 }

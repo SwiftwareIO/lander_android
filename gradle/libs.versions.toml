@@ -1,6 +1,8 @@
 [versions]
 agp = "9.1.0"
 kotlin = "2.4.0"
+# The stdlib the library depends on: matches its Kotlin apiVersion (2.2).
+kotlinStdlib = "2.2.21"
 coroutines = "1.10.2"
 installreferrer = "2.2"
 junit = "4.13.2"
@@ -10,6 +12,7 @@ robolectric = "4.16"
 activity = "1.13.0"
 
 [libraries]
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinStdlib" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 installreferrer = { module = "com.android.installreferrer:installreferrer", version.ref = "installreferrer" }

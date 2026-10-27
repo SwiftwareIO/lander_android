@@ -61,6 +61,7 @@ kotlin {
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines.android)
     // Play Install Referrer: read once on first launch for deferred deep links.
     implementation(libs.installreferrer)
