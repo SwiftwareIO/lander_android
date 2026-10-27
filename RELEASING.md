@@ -1,6 +1,6 @@
 # Releasing lander-android
 
-The SDK is developed in the Lander monorepo (`sdk/lander_android`) and published as `link.lander:lander-android` on Maven Central, through the Central Portal. `.github/workflows/sdk-android-release.yml` does the work:
+The SDK is developed in the Lander monorepo (`sdk/lander_android`) and published as `link.golander:lander-android` on Maven Central, through the Central Portal. `.github/workflows/sdk-android-release.yml` does the work:
 
 - **mirror** job: on every push to `main` that touches `sdk/lander_android`, it pushes a `git subtree split` of the folder to `main` of the public, read only mirror [github.com/SwiftwareIO/lander_android](https://github.com/SwiftwareIO/lander_android). The POM's `scm` and issue links point there. Never commit to the mirror directly.
 - **release** job: on a monorepo tag `android-vX.Y.Z`, it checks the version, runs the unit tests and lint, publishes to Maven Central (signed, released automatically) and pushes tag `vX.Y.Z` to the mirror.
@@ -24,16 +24,11 @@ ssh-keygen -t ed25519 -N "" -C "lander monorepo to lander_android" -f lander_and
 
 - Delete both files afterwards. Run the workflow once from the Actions tab (**Run workflow** on `main`) to fill the mirror.
 
-### 2. The `link.lander` namespace on Maven Central
+### 2. The `link.golander` namespace on Maven Central
 
-Maven Central only accepts a group ID whose namespace you have verified. A namespace is a reversed domain: `link.lander` belongs to whoever controls **`lander.link`**. Lander's own domain is `golander.link`, which maps to `link.golander`, not `link.lander`.
+Maven Central only accepts a group ID whose namespace you have verified. A namespace is a reversed domain, so `link.golander` is verified on **`golander.link`**, which Lander owns. Sign in at [central.sonatype.com](https://central.sonatype.com), open **Namespaces > Add namespace**, enter `link.golander` and add the TXT record it shows to the DNS of `golander.link` (on Cloudflare). Click **Verify**.
 
-<!-- Checked on 2026-10-27: the registry reported lander.link as available, so nobody owns it yet. -->
-
-Pick one before the first release:
-
-- **Keep `link.lander`:** register `lander.link`, then sign in at [central.sonatype.com](https://central.sonatype.com), open **Namespaces > Add namespace**, enter `link.lander` and add the TXT record it shows to the DNS of `lander.link`. Click **Verify**.
-- **Use `link.golander`:** add the namespace `link.golander` and verify it with a TXT record on `golander.link` (on Cloudflare). Then change `GROUP` in `gradle.properties` and the dependency line in `README.md` and `apps/docs/content/docs/android/` to `link.golander:lander-android`. Nothing else changes: the Kotlin package stays `link.lander.android`.
+The Kotlin package stays `link.lander.android`: Java packages need no verification, only the Maven group does.
 
 The TXT record can be deleted once the namespace shows as verified.
 

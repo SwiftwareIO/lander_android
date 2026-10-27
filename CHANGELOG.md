@@ -1,6 +1,6 @@
 ## 0.1.0
 
-First release of the native Android SDK (`link.lander:lander-android`), with the same behavior as `lander_flutter` 0.3.0:
+First release of the native Android SDK (`link.golander:lander-android`), with the same behavior as `lander_flutter` 0.3.0:
 
 * `Lander.initialize` in `Application.onCreate`: validates the publishable key (rejects `sk_` keys and never echoes the key), creates the random install ID and reports the launch with `POST /v1/sdk/init` in the background.
 * `Lander.handleIntent` for App Links and custom scheme URLs on cold and warm start. Each intent is read once, so recreated activities (rotation, process death, reopening from Recents) do not deliver a link twice.

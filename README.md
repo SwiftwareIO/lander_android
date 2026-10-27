@@ -17,7 +17,7 @@ Requires Android API 24+ (minSdk 24). Works from Kotlin and Java.
 ```kotlin
 // app/build.gradle.kts
 dependencies {
-    implementation("link.lander:lander-android:0.1.0")
+    implementation("link.golander:lander-android:0.1.0")
 }
 ```
 
@@ -259,7 +259,7 @@ Point it at another API with `-PlanderBaseUrl=https://api.golander.link -Plander
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 ./gradlew :lander:testDebugUnitTest :lander:lint :example:assembleDebug
-./gradlew :lander:publishToMavenLocal   # link.lander:lander-android:0.1.0 in ~/.m2
+./gradlew :lander:publishToMavenLocal   # link.golander:lander-android:0.1.0 in ~/.m2
 ```
 
 The SDK core (`LanderClient`) runs behind a `LanderPlatform` interface and an `HttpTransport`, so most tests run on the JVM with fakes and virtual time; Robolectric covers intents and storage.
