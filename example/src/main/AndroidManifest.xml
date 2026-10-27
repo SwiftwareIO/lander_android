@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:name=".AcmeApp"
+        android:allowBackup="true"
+        android:label="Acme Shop"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar">
+
+        <!-- singleTop: links that arrive while the app runs go to onNewIntent
+             instead of starting a second activity. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Lander: App Links for the project's link domain. autoVerify makes
+                 Android check https://acme.golander.link/.well-known/assetlinks.json. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="acme.golander.link" />
+            </intent-filter>
+
+            <!-- Lander: custom scheme fallback, for example acmeshop://product/123 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="acmeshop" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

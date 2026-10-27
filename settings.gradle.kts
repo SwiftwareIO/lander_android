@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "lander-android"
 
 include(":lander")
-//include(":example")
+include(":example")

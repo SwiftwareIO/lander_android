@@ -38,7 +38,9 @@ android {
 
     lint {
         abortOnError = true
-        checkDependencies = false
+        warningsAsErrors = true
+        // Version freshness checks need the network and are not about this code.
+        disable += setOf("NewerVersionAvailable", "AndroidGradlePluginVersion", "GradleDependency")
     }
 
     publishing {
