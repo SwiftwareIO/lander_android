@@ -10,7 +10,7 @@ Deep linking without the fuss. The native Android SDK for [Lander](https://golan
 - Privacy first: a random install ID, no fingerprinting, no advertising ID.
 - Small: kotlinx-coroutines and the Play Install Referrer library, nothing else. HTTP uses `HttpURLConnection`.
 
-Requires Android API 24+ (minSdk 24). Works from Kotlin and Java.
+Requires Android API 24+ (minSdk 24). Works from Kotlin and Java. Full docs: [docs.golander.link/docs/android](https://docs.golander.link/docs/android).
 
 ## Install
 
